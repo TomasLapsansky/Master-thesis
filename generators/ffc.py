@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 import generators.generators
 
 base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_dataset'
+new_base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_new_dataset'
 # In out case, raw 006_002_270.png has to be removed because it was corrupted (pngcheck)
 
 
@@ -33,12 +34,16 @@ def read_images(img_path, output):
         return None
 
 
-def init(fcc_shape=480):
-    dataset_path = f"{base_path}_{fcc_shape}"
+def init(fcc_shape=480, new=False):
+    if new:
+        dataset_path = f"{new_base_path}_{fcc_shape}"
+    else:
+        dataset_path = f"{base_path}_{fcc_shape}"
     # Train dataset
     real_images = glob.glob(f"{dataset_path}/train/real/raw/*.png")
     fake_images = glob.glob(f"{dataset_path}/train/fake/raw/*.png")
-    fake_images = fake_images[:len(real_images)]
+    if not new:
+        fake_images = fake_images[:len(real_images)]
     images = real_images + fake_images
     shuffle(images)
     masks = [f.replace("/raw/", "/masks/") for f in images]
@@ -56,11 +61,14 @@ def init(fcc_shape=480):
     # Print the sizes of the train and test datasets:
     # print("Train dataset size:", len(list(dataset)))
     print(f"Train dataset loaded: {train_dataset_size}")
+    print(f"Real: {len(real_images)}")
+    print(f"Fake: {len(fake_images)}")
 
     # Validation dataset
     real_images = glob.glob(f"{dataset_path}/val/real/raw/*.png")
     fake_images = glob.glob(f"{dataset_path}/val/fake/raw/*.png")
-    fake_images = fake_images[:len(real_images)]
+    if not new:
+        fake_images = fake_images[:len(real_images)]
     images = real_images + fake_images
     shuffle(images)
     masks = [f.replace("/raw/", "/masks/") for f in images]
@@ -76,6 +84,8 @@ def init(fcc_shape=480):
 
     # Print the sizes of the train and test datasets:
     print(f"Validation dataset size: {val_dataset_size}")
+    print(f"Real: {len(real_images)}")
+    print(f"Fake: {len(fake_images)}")
     # print("Validation dataset loaded")
 
     # Set steps

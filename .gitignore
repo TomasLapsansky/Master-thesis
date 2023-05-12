@@ -1,3 +1,5 @@
+.DS_Store
+__pycache__/
 faceforensics_download_v4.py
 images/
 EfficientUnet/

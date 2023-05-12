@@ -1,6 +1,8 @@
 train_flow = None
 valid_flow = None
 test_flow = None
+val_labels = None
+test_labels = None
 train_steps = None
 valid_steps = None
 test_steps = None

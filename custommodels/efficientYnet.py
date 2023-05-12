@@ -23,7 +23,7 @@ def get_efficientnet(trained, eff_type, frozen, lr):
             print(F"Setting efficientYnetS-pretrained")
             models.models.input_shape = (384, 384, 3)
             if frozen is not None:
-                models.models.callback_list = checkpoint.checkpoint_callback(f"fefficientYnetS-pretrained-f-{frozen}-lr{lr}", True)
+                models.models.callback_list = checkpoint.checkpoint_callback(f"efficientYnetS-pretrained-f-{frozen}-lr{lr}", True)
             else:
                 models.models.callback_list = checkpoint.checkpoint_callback("efficientYnetS-pretrained", True)
             return EfficientNetV2S(

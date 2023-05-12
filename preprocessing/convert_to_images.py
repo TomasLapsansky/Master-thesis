@@ -6,9 +6,13 @@ from pathlib import Path
 
 # base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/DFDC'
 # images_dir = '/storage/brno12-cerit/home/xlapsa00/datasets/DFDC_images'
-base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics'
-images_dir = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_images'
-image_fps = 1
+# base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics'
+# images_dir = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_images'
+# base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_new'
+# images_dir = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_new_images'
+base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/Celeb-DF'
+images_dir = '/storage/brno12-cerit/home/xlapsa00/datasets/Celeb-DF_images_fps_28'
+image_fps = 28
 
 
 def task(video_path):

@@ -10,8 +10,8 @@ import cv2
 
 from mtcnn import MTCNN
 
-base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_images'
-dataset_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_images'
+base_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_new_images'
+dataset_path = '/storage/brno12-cerit/home/xlapsa00/datasets/FaceForensics_new_dataset'
 # mask_size = 224  # B0
 # mask_size = 384  # V2S
 # mask_size = 480  # V2M
@@ -126,8 +126,8 @@ def task_masks(mask_path):
 
     # Saving mask
     new_mask_name = mask_path.replace(base_path, f"{dataset_path}_{mask_size}")
-    new_mask_name = new_mask_name.replace("/manipulated_sequences/", "/fake/")
-    new_mask_name = new_mask_name.replace("/videos/", "/")
+    # new_mask_name = new_mask_name.replace("/manipulated_sequences/", "/fake/")
+    # new_mask_name = new_mask_name.replace("/videos/", "/")
     Path(os.path.dirname(new_mask_name)).mkdir(parents=True, exist_ok=True)
     try:
         if cv2.imwrite(new_mask_name, new_mask_image):
@@ -159,8 +159,8 @@ def task_masks(mask_path):
                                            cv2.BORDER_CONSTANT, value=(0, 0, 0))
         # Saving raw
         new_raw_name = raw_path.replace(base_path, f"{dataset_path}_{mask_size}")
-        new_raw_name = new_raw_name.replace("/manipulated_sequences/", "/fake/")
-        new_raw_name = new_raw_name.replace("/videos/", "/")
+        # new_raw_name = new_raw_name.replace("/manipulated_sequences/", "/fake/")
+        # new_raw_name = new_raw_name.replace("/videos/", "/")
         Path(os.path.dirname(new_raw_name)).mkdir(parents=True, exist_ok=True)
         try:
             if cv2.imwrite(new_raw_name, new_raw_image):
@@ -177,51 +177,51 @@ def task_masks(mask_path):
     # Process original images with same masks
     # NeuralTextures = YouTube (first digit of name and frame counter)
     # DeepFakeDetection = actors (remove second digit and _ of name and identifier before frame)
-    if mask_path.find("/NeuralTextures/") != -1:
-        # Load real image if exists
-        real_path = mask_path.replace("/manipulated_sequences/NeuralTextures/masks/",
-                                      "/original_sequences/youtube/raw/")
-        name = os.path.basename(real_path)
-        idx_start = name.find("_")
-        idx_end = name.find("_", idx_start + 1)
-        new_name = name[:idx_start] + name[idx_end:]
-        real_path = real_path.replace(name, new_name)
-        if os.path.exists(real_path):
-            # Saving real
-            # First check existence of file
-            new_real_name = real_path.replace(base_path, f"{dataset_path}_{mask_size}")
-            new_real_name = new_real_name.replace("/youtube/", "/")
-            new_real_name = new_real_name.replace("/original_sequences/", "/real/")
-            new_real_name = new_real_name.replace("/videos/", "/")
-            Path(os.path.dirname(new_real_name)).mkdir(parents=True, exist_ok=True)
-            if not os.path.exists(new_real_name):
-                img_real = cv2.imread(real_path)
-                # Scale if needed
-                if stat_scaled:
-                    scale_percent = 100 / scaling  # percentage
-                    width = int(img_real.shape[1] * scale_percent / 100)
-                    height = int(img_real.shape[0] * scale_percent / 100)
-                    dim = (width, height)
-                    # resize image
-                    img_real = cv2.resize(img_real, dim, interpolation=cv2.INTER_AREA)
-                # Cut and create new raw image
-                new_real = img_real[
-                          (center[1] - int(mask_size / 2) + top_border):(center[1] + int(mask_size / 2) - bottom_border),
-                          (center[0] - int(mask_size / 2) + left_border):(center[0] + int(mask_size / 2) - right_border)]
-                # Fill space with black space
-                new_real_image = cv2.copyMakeBorder(new_real, top_border, bottom_border, left_border, right_border,
-                                                   cv2.BORDER_CONSTANT, value=(0, 0, 0))
-                try:
-                    if cv2.imwrite(new_real_name, new_real_image):
-                        # print(new_real_name + " real saved")
-                        stat_real_saved += 1
-                    else:
-                        print(new_real_name + " real not saved!", file=sys.stderr)
-                        stat_real_unsaved += 1
-                except Exception as e:
-                    print(f"{new_mask_name} failed due to error: {e}", file=sys.stderr)
-        else:
-            stat_real_non_exist += 1
+    # if mask_path.find("/NeuralTextures/") != -1:
+    #     # Load real image if exists
+    #     real_path = mask_path.replace("/manipulated_sequences/NeuralTextures/masks/",
+    #                                   "/original_sequences/youtube/raw/")
+    #     name = os.path.basename(real_path)
+    #     idx_start = name.find("_")
+    #     idx_end = name.find("_", idx_start + 1)
+    #     new_name = name[:idx_start] + name[idx_end:]
+    #     real_path = real_path.replace(name, new_name)
+    #     if os.path.exists(real_path):
+    #         # Saving real
+    #         # First check existence of file
+    #         new_real_name = real_path.replace(base_path, f"{dataset_path}_{mask_size}")
+    #         new_real_name = new_real_name.replace("/youtube/", "/")
+    #         new_real_name = new_real_name.replace("/original_sequences/", "/real/")
+    #         new_real_name = new_real_name.replace("/videos/", "/")
+    #         Path(os.path.dirname(new_real_name)).mkdir(parents=True, exist_ok=True)
+    #         if not os.path.exists(new_real_name):
+    #             img_real = cv2.imread(real_path)
+    #             # Scale if needed
+    #             if stat_scaled:
+    #                 scale_percent = 100 / scaling  # percentage
+    #                 width = int(img_real.shape[1] * scale_percent / 100)
+    #                 height = int(img_real.shape[0] * scale_percent / 100)
+    #                 dim = (width, height)
+    #                 # resize image
+    #                 img_real = cv2.resize(img_real, dim, interpolation=cv2.INTER_AREA)
+    #             # Cut and create new raw image
+    #             new_real = img_real[
+    #                       (center[1] - int(mask_size / 2) + top_border):(center[1] + int(mask_size / 2) - bottom_border),
+    #                       (center[0] - int(mask_size / 2) + left_border):(center[0] + int(mask_size / 2) - right_border)]
+    #             # Fill space with black space
+    #             new_real_image = cv2.copyMakeBorder(new_real, top_border, bottom_border, left_border, right_border,
+    #                                                cv2.BORDER_CONSTANT, value=(0, 0, 0))
+    #             try:
+    #                 if cv2.imwrite(new_real_name, new_real_image):
+    #                     # print(new_real_name + " real saved")
+    #                     stat_real_saved += 1
+    #                 else:
+    #                     print(new_real_name + " real not saved!", file=sys.stderr)
+    #                     stat_real_unsaved += 1
+    #             except Exception as e:
+    #                 print(f"{new_mask_name} failed due to error: {e}", file=sys.stderr)
+    #     else:
+    #         stat_real_non_exist += 1
 
     # Add to queue for statistics
     queue.put(tuple([stat_mask_saved, stat_mask_unsaved, stat_raw_saved, stat_raw_unsaved, stat_raw_non_exist,
@@ -249,7 +249,11 @@ def task_actors(actor_path, detector):
         y = int(y) + int(h / 2)
         confidence = face['confidence']
         if confidence > 0.95 and w > 75:
-            name = f"{dataset_path}_{mask_size}/real/raw/{actor_num}.png"
+            # Load image one more time for correctness
+            img = cv2.imread(actor_path)
+            # name = f"{dataset_path}_{mask_size}/real/raw/{actor_num}.png"
+            name = actor_path.replace(base_path, f"{dataset_path}_{mask_size}")
+            name = f"{name[:-4]}_{actor_num}.png"
             actor_num += 1
             # Calculate scaling
             scaling = 1
@@ -285,10 +289,20 @@ def task_actors(actor_path, detector):
             # Fill space with black space
             new_face_image = cv2.copyMakeBorder(new_face, top_border, bottom_border, left_border, right_border,
                                                 cv2.BORDER_CONSTANT, value=(0, 0, 0))
-            h, w, _ = new_face_image.shape
-            if w > 224 or h > 224:
-                print(f"{w} {h} - {actor_path} - {right_border} {left_border}", file=sys.stderr)
-            return tuple([0, 0, 0, 0, 0])
+            # h, w, _ = new_face_image.shape
+            # if w > 224 or h > 224:
+            #     print(f"{w} {h} - {actor_path} - {right_border} {left_border}", file=sys.stderr)
+            mask_name = name.replace("/raw/", "/masks/")
+            Path(os.path.dirname(name)).mkdir(parents=True, exist_ok=True)
+            Path(os.path.dirname(mask_name)).mkdir(parents=True, exist_ok=True)
+            black_image = 255 * np.zeros((mask_size, mask_size, 3), dtype=np.uint8)
+            try:
+                if cv2.imwrite(mask_name, black_image):
+                    pass
+                else:
+                    print(name + " real mask not saved!", file=sys.stderr)
+            except Exception as e:
+                print(f"{actor_path} failed due to error: {e}", file=sys.stderr)
             try:
                 if cv2.imwrite(name, new_face_image):
                     # print(name + " real saved")
@@ -312,10 +326,10 @@ def cut_masks():
     shared_queue = SimpleQueue()
     mask_paths = []
     for path, subdirs, files in os.walk(base_path):
-        # excluded faceswap for different masks, faceshifter is excluded because it does not have masks
+        # print(path)
         mask_paths += [os.path.join(path, name) for name in files if
-                       name.endswith('.png') and path.find("/masks/") != -1 and path.find("/FaceSwap/") == -1]
-    print("Done loading mask paths")
+                       name.endswith('.png') and path.find("/masks") != -1]
+    print(f"Done loading mask paths {len(mask_paths)}")
     # Processing mask paths and their raws, reals from actors
     cnt = len(mask_paths)
     with multiprocessing.Pool(initializer=init_worker, initargs=(shared_queue, mask_size, ),
@@ -331,10 +345,12 @@ def cut_masks():
                 print(f"{cnt} to be done")
     print(f'Done with first step: {stats}')
     real_paths = []
-    for path, subdirs, files in os.walk(os.path.join(base_path, "original_sequences/actors/raw/videos")):
+    # for path, subdirs, files in os.walk(os.path.join(base_path, "original_sequences/actors/raw/videos")):
+    for path, subdirs, files in os.walk(base_path):
         # excluded faceswap for different masks, faceshifter is excluded because it does not have masks
-        real_paths += [os.path.join(path, name) for name in files if name.endswith('.png')]
-    print(f"Done loading real actors paths {len(real_paths)}")
+        real_paths += [os.path.join(path, name) for name in files if
+                       name.endswith('.png') and path.find("/real") != -1]
+    print(f"Done loading real paths {len(real_paths)}")
     # Processing reals from YouTube
     detector = MTCNN()
     global actor_num

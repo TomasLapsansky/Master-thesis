@@ -9,7 +9,7 @@ import models
 from processing import checkpoint
 
 
-def build_model(trained):
+def build_model(trained, lr=0.0001):
     models.models.input_shape = (224, 224, 3)
 
     generators.generators.preprocessing_f = tensorflow.keras.applications.vgg19.preprocess_input
@@ -49,8 +49,9 @@ def build_model(trained):
 
     new_model.summary()
 
+    optimizer = keras.optimizers.Adam(learning_rate=lr)
     new_model.compile(
-        optimizer="Adam",
+        optimizer=optimizer,
         loss='binary_crossentropy',
         metrics=['accuracy']
     )

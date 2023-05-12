@@ -7,7 +7,8 @@ import generators
 
 def checkpoint_callback(name, multiple=False):
     if multiple:
-        checkpoint_path = os.getcwd() + "/../checkpoints-ynet"
+        # checkpoint_path = os.getcwd() + "/../checkpoints-ynet"
+        checkpoint_path = os.getcwd() + "/../checkpoints"
         if not os.path.exists(checkpoint_path):
             os.mkdir(checkpoint_path)
         filepath = checkpoint_path + "/" + name + "-COMBINED-" + generators.generators.dataset_name + "-{epoch:02d}-VAL-loss_{" \
@@ -21,10 +22,10 @@ def checkpoint_callback(name, multiple=False):
                                                                                              "val_reconstruction_accuracy:.2f}.hdf5"
         checkpoint = ModelCheckpoint(filepath, monitor='val_reconstruction_accuracy', verbose=1, save_best_only=False, mode='max')
     else:
-        checkpoint_path = os.getcwd() + "/../checkpoints-cnn"
+        checkpoint_path = os.getcwd() + "/../checkpoints-M-new"
         if not os.path.exists(checkpoint_path):
             os.mkdir(checkpoint_path)
-        filepath = checkpoint_path + "/" + name + "-" + generators.generators.dataset_name + "-{epoch:02d}-{val_accuracy:.2f}.hdf5"
+        filepath = checkpoint_path + "/" + name + "-" + generators.generators.dataset_name + "-{epoch:02d}-{val_loss:.2f}.hdf5"
         checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=False, mode='max')
     callbacks_list = [checkpoint]
     return callbacks_list
