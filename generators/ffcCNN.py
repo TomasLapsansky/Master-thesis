@@ -1,12 +1,15 @@
+"""
+File name: ffcCNN.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Processing FaceForensics dataset.
+"""
+
 import glob
 import sys
 from random import shuffle
 
 import tensorflow as tf
 import numpy as np
-import cv2
-
-from sklearn.model_selection import train_test_split
 
 import generators.generators
 
@@ -63,7 +66,6 @@ def init(fcc_shape=480, new=False, compression=None):
     if not new:
         fake_images = fake_images[:len(real_images)]
     images = real_images + fake_images
-    # images = glob.glob(f"{dataset_path}/train/*/raw/*.png")
     shuffle(images)
     init_labels = [0.0] * len(images)
     dataset = tf.data.Dataset.from_tensor_slices((images, init_labels))
@@ -77,7 +79,6 @@ def init(fcc_shape=480, new=False, compression=None):
     generators.generators.train_flow = dataset
 
     # Print the sizes of the train and test datasets:
-    # print("Train dataset size:", len(list(dataset)))
     print(f"Train dataset loaded: {train_dataset_size}")
     print(f"Real: {len(real_images)}")
     print(f"Fake: {len(fake_images)}")
@@ -88,7 +89,6 @@ def init(fcc_shape=480, new=False, compression=None):
     if not new:
         fake_images = fake_images[:len(real_images)]
     images = real_images + fake_images
-    # images = glob.glob(f"{dataset_path}/val/*/raw/*.png")
     real_labels = [1.0] * len(real_images)
     fake_labels = [0.0] * len(fake_images)
     init_labels = real_labels + fake_labels
@@ -107,7 +107,6 @@ def init(fcc_shape=480, new=False, compression=None):
     print(f"Validation dataset size: {val_dataset_size}")
     print(f"Real: {len(real_images)}")
     print(f"Fake: {len(fake_images)}")
-    # print("Validation dataset loaded")
 
     # Test dataset
     real_images = glob.glob(f"{dataset_path}/test/real/raw/*.png")
@@ -115,7 +114,6 @@ def init(fcc_shape=480, new=False, compression=None):
     if not new:
         fake_images = fake_images[:len(real_images)]
     images = real_images + fake_images
-    # images = glob.glob(f"{dataset_path}/val/*/raw/*.png")
     real_labels = [1.0] * len(real_images)
     fake_labels = [0.0] * len(fake_images)
     init_labels = real_labels + fake_labels
@@ -131,7 +129,6 @@ def init(fcc_shape=480, new=False, compression=None):
     generators.generators.test_labels = np.array(init_labels)
 
     # Print the sizes of the train and test datasets:
-    # print("Train dataset size:", len(list(dataset)))
     print(f"Test dataset loaded: {test_dataset_size}")
     print(f"Real: {len(real_images)}")
     print(f"Fake: {len(fake_images)}")

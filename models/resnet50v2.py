@@ -1,3 +1,9 @@
+"""
+File name: resnet50v2.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Resnet50 v2 model representation.
+"""
+
 import tensorflow
 from keras import Model
 from keras.layers import Dense

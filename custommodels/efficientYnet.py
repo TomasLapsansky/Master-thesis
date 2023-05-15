@@ -1,14 +1,14 @@
-import tensorflow as tf
+"""
+File name: efficientYnet.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Our custom EfficientYnet model representation.
+"""
+
 from keras import Model
 from keras.layers import *
-# from keras.metrics import *
 from keras.applications import *
 from tensorflow import keras
 from keras import backend as K
-from keras.models import Sequential
-from IPython.display import SVG
-
-import numpy as np
 
 import generators.generators
 import models
@@ -309,14 +309,6 @@ def build_model(trained, eff_type="M", frozen=None, lr=0.0001, eff_weights=None)
     )
     model.summary()
     print(model.get_layer("activation_9").get_config())
-
-    # keras.utils.plot_model(
-    #     model,
-    #     to_file="model.png",
-    #     show_shapes=True,
-    #     show_layer_names=True,
-    #     rankdir="TB"
-    # )
 
     return model
 

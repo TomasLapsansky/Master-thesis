@@ -1,3 +1,9 @@
+"""
+File name: generators.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Submodule main file.
+"""
+
 train_flow = None
 valid_flow = None
 test_flow = None

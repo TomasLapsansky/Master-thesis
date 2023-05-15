@@ -1,3 +1,9 @@
+"""
+File name: checkpoint.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: This file is used for handling checkpoints in the project.
+"""
+
 import os
 
 from keras.callbacks import ModelCheckpoint
@@ -22,7 +28,7 @@ def checkpoint_callback(name, multiple=False):
                                                                                              "val_reconstruction_accuracy:.2f}.hdf5"
         checkpoint = ModelCheckpoint(filepath, monitor='val_reconstruction_accuracy', verbose=1, save_best_only=False, mode='max')
     else:
-        checkpoint_path = os.getcwd() + "/../checkpoints-M-new"
+        checkpoint_path = os.getcwd() + "/../checkpoints"
         if not os.path.exists(checkpoint_path):
             os.mkdir(checkpoint_path)
         filepath = checkpoint_path + "/" + name + "-" + generators.generators.dataset_name + "-{epoch:02d}-{val_loss:.2f}.hdf5"

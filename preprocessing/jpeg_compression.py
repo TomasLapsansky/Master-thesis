@@ -1,7 +1,11 @@
-import os
+"""
+File name: jpeg_compression.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: This file is used for jpeg compression of folder, currently FaceForensics dataset
+"""
+
 from pathlib import Path
 from PIL import Image
-import concurrent.futures
 import argparse
 import multiprocessing
 

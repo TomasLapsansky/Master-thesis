@@ -1,12 +1,14 @@
+"""
+File name: ffc.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Processing FaceForensics dataset with masks.
+"""
+
 import glob
 import sys
 from random import shuffle
 
 import tensorflow as tf
-import numpy as np
-import cv2
-
-from sklearn.model_selection import train_test_split
 
 import generators.generators
 
@@ -59,7 +61,6 @@ def init(fcc_shape=480, new=False):
     generators.generators.train_flow = dataset
 
     # Print the sizes of the train and test datasets:
-    # print("Train dataset size:", len(list(dataset)))
     print(f"Train dataset loaded: {train_dataset_size}")
     print(f"Real: {len(real_images)}")
     print(f"Fake: {len(fake_images)}")
@@ -86,7 +87,6 @@ def init(fcc_shape=480, new=False):
     print(f"Validation dataset size: {val_dataset_size}")
     print(f"Real: {len(real_images)}")
     print(f"Fake: {len(fake_images)}")
-    # print("Validation dataset loaded")
 
     # Set steps
     generators.generators.train_steps = dataset.cardinality().numpy()

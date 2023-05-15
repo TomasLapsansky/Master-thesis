@@ -1,3 +1,9 @@
+"""
+File name: preprocessing_celeb-df-v2.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: This file is used for preprocessing the Celeb-DF v2 dataset.
+"""
+
 import argparse
 import os
 import sys
@@ -103,7 +109,6 @@ def cut_faces():
 
     real_paths = []
     for path, subdirs, files in os.walk(base_path):
-        # excluded faceswap for different masks, faceshifter is excluded because it does not have masks
         real_paths += [os.path.join(path, name) for name in files if
                        name.endswith('.png') != -1]
     print(f"Done loading video paths {len(real_paths)}")

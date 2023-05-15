@@ -1,8 +1,13 @@
+"""
+File name: celebDF.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Processing Celeb-DF dataset.
+"""
+
 import glob
 
 import numpy as np
 import tensorflow as tf
-import os
 import re
 
 import generators.generators
@@ -92,7 +97,6 @@ def init(shape=480, compress=None):
 
     output_signature = (
         tf.TensorSpec(shape=(None, 480, 480, 3), dtype=tf.float32),
-        # tf.TensorSpec(shape=(None,), dtype=tf.string),
         tf.TensorSpec(shape=(None,), dtype=tf.float32)
     )
     # Get the dataset size
@@ -126,9 +130,4 @@ def init(shape=480, compress=None):
 
     generators.generators.is_set = True
 
-    # Iterate over the dataset and print the elements
-    # for batch_idx, (images, labels) in enumerate(dataset):
-    #     print(f"Batch {batch_idx + 1}:")
-    #     for idx, (image, label) in enumerate(zip(images.numpy(), labels.numpy())):
-    #         print(f"  Image {idx + 1}: shape={image}, label={label}")
     print(f"steps: {generators.generators.test_steps}")

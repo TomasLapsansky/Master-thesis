@@ -1,9 +1,13 @@
-import tensorflow
+"""
+File name: efficientnet.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: EfficientNet model representation.
+"""
+
 from keras import Model
 from keras.layers import Dense, GlobalAveragePooling2D
 from keras.applications import *
 from tensorflow import keras
-from keras.models import Sequential
 
 import generators.generators
 import models
@@ -32,16 +36,6 @@ def build_model(trained, eff_type="M", frozen=None, lr=0.0001):
             weights='imagenet'
         )
 
-    # if v2:
-    #     efficientnet_model = EfficientNetV2B0(
-    #         include_top=False,
-    #         weights='imagenet'
-    #     )
-    # else:
-    #     efficientnet_model = EfficientNetB0(
-    #         include_top=False,
-    #         weights='imagenet'
-    #     )
     if frozen is not None:
         for layer in efficientnet_model.layers:
             layer.trainable = False
@@ -69,15 +63,12 @@ def build_model(trained, eff_type="M", frozen=None, lr=0.0001):
             models.models.callback_list = checkpoint.checkpoint_callback(f"efficientnetM-lr{lr}")
         elif eff_type == "L":
             models.models.callback_list = checkpoint.checkpoint_callback(f"efficientnetL-lr{lr}")
-        # models.models.callback_list = checkpoint.checkpoint_callback(f"efficientnet")
 
     optimizer = keras.optimizers.Adam(learning_rate=lr)
-    # optimizer = keras.optimizers.Adam()
     new_model.compile(
         optimizer=optimizer,
         loss='binary_crossentropy',
         metrics=['accuracy']
     )
 
-    # new_model.summary()
     return new_model

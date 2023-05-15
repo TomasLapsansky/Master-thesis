@@ -1,16 +1,17 @@
+"""
+File name: efficientYdet.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Our custom EfficientYdet model representation.
+"""
+
 import tensorflow as tf
 from keras import Model
 from keras.layers import *
-# from keras.metrics import *
 from keras.regularizers import l2
 from keras.applications import *
 from tensorflow import keras
 from keras import backend as K
 from keras import layers
-from keras.models import Sequential
-from IPython.display import SVG
-
-import numpy as np
 
 import generators.generators
 import models
@@ -104,9 +105,6 @@ def set_unet(efficientdet_model, eff_type):
     # Edit efficientDet
     prediction = efficientdet_model.output
     if eff_type == "M":
-        # Blocks for V2M
-        # block7_output = efficientdet_model.get_layer('block7e_project_bn').output
-        # block6_output = efficientdet_model.get_layer('block6r_project_bn').output
         block5_output = efficientdet_model.get_layer('block5n_project_bn').output
         block4_output = efficientdet_model.get_layer('block4g_project_bn').output
         block3_output = efficientdet_model.get_layer('block3e_project_bn').output
@@ -114,9 +112,6 @@ def set_unet(efficientdet_model, eff_type):
         block1_output = efficientdet_model.get_layer('block1c_project_bn').output
         rescaling_output = efficientdet_model.get_layer('rescaling').output
 
-        # x = efficientnet.get_layer('top_activation').output
-        # x = block7_output
-        # x = upscale_block(512, x, block5_output)
         x = block5_output
         x = upscale_block(256, x, block3_output)
         x = upscale_block(128, x, block2_output)
@@ -127,9 +122,6 @@ def set_unet(efficientdet_model, eff_type):
 
         return Model(inputs=efficientdet_model.input, outputs=[prediction, reconstruction])
     elif eff_type == "L":
-        # Blocks for V2L
-        # block7_output = efficientdet_model.get_layer('block7g_project_bn').output
-        # block6_output = efficientdet_model.get_layer('block6y_project_bn').output
         block5_output = efficientdet_model.get_layer('block5s_project_bn').output
         block4_output = efficientdet_model.get_layer('block4j_project_bn').output
         block3_output = efficientdet_model.get_layer('block3g_project_bn').output
@@ -137,9 +129,6 @@ def set_unet(efficientdet_model, eff_type):
         block1_output = efficientdet_model.get_layer('block1d_project_bn').output
         rescaling_output = efficientdet_model.get_layer('rescaling').output
 
-        # x = efficientnet.get_layer('top_activation').output
-        # x = block7_output
-        # x = upscale_block(512, x, block5_output)
         x = block5_output
         x = upscale_block(256, x, block3_output)
         x = upscale_block(128, x, block2_output)
@@ -229,16 +218,6 @@ def build_model(trained, eff_type="M", frozen=None, lr=0.0001, dropout_rate=0.5)
             'reconstruction': 'accuracy'
         }
     )
-    # model.summary()
-    # print(model.get_layer("activation_9").get_config())
-
-    # keras.utils.plot_model(
-    #     model,
-    #     to_file="model.png",
-    #     show_shapes=True,
-    #     show_layer_names=True,
-    #     rankdir="TB"
-    # )
 
     return model
 

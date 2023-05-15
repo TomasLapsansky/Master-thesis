@@ -1,17 +1,21 @@
+"""
+File name: main.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: This file is used as the main executable script of the project. It takes care of processing the arguments
+            and setting the parameters of the model, dataset and then starting the training or evaluation process.
+"""
+
 import argparse
 import os
 import sys
 
-import cv2
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 
 from sklearn import metrics
-from sklearn.metrics import roc_curve, auc, det_curve
-import scikitplot as skplt
 
-from generators import generators, kaggle140k, dfdc, ffc, ffcCNN, celebDF
+from generators import generators, kaggle140k, ffc, ffcCNN, celebDF
 from models import models, densenet121, vgg19, xception, resnet50, resnet50v2, efficientnet, efficientdet
 from custommodels import efficientYnet, efficientYdet
 
@@ -38,10 +42,6 @@ def parse_args():
                         help='Path to loaded checkpoint', required=False, default=None)
     parser.add_argument('-p', action='store', dest="print",
                         help='Path to image', required=False, default=None)
-    parser.add_argument('-ep', action='store_true', dest="eprint",
-                        help='Evaluate multiple models and print it to graph', required=False, default=False)
-    parser.add_argument('-sp', action='store_true', dest="sprint",
-                        help='Print evaluation values to strings', required=False, default=False)
 
     return parser.parse_args()
 
@@ -192,132 +192,14 @@ def print_evaluate(model, image_name):
     plt.savefig("images/" + image_name + ".png")
 
 
-def print_graph():
-    eff_net = efficientnet.build_model(True, "M")
-    eff_net.built = True
-    eff_net.load_weights("/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-f-block6r_project_conv-lr0.0001-ffc480sn-09-0.85.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    y_pred = eff_net.predict(generators.test_flow).ravel()
-    # Compute the FPR and TPR at various thresholds
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    fpr, fnr, thresholds = det_curve(y_test, y_pred)
-    # Calculate the AUC
-    # roc_auc = auc(fpr, tpr)
-    # Plot the ROC curve for the model
-    plt.plot(fpr, fnr, lw=2, label=f"EfficientNet M block 6 freeze")
-    # plt.plot(fpr, fnr, lw=2, label=f"Our EfficientDet L)")
-
-    eff_net.load_weights(
-        "/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-f-block5n_project_conv-lr0.0001-ffc480sn-10-0.91.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    y_pred = eff_net.predict(generators.test_flow).ravel()
-    # Compute the FPR and TPR at various thresholds
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    fpr, fnr, thresholds = det_curve(y_test, y_pred)
-    # Calculate the AUC
-    # roc_auc = auc(fpr, tpr)
-    # Plot the ROC curve for the model
-    plt.plot(fpr, fnr, lw=2, label=f"EfficientNet M block 5 freeze")
-    # plt.plot(fpr, fnr, lw=2, label=f"Our EfficientDet L)")
-
-    eff_net.load_weights(
-        "/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-f-block4g_project_conv-lr0.0001-ffc480sn-08-0.96.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    y_pred = eff_net.predict(generators.test_flow).ravel()
-    # Compute the FPR and TPR at various thresholds
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    fpr, fnr, thresholds = det_curve(y_test, y_pred)
-    # Calculate the AUC
-    # roc_auc = auc(fpr, tpr)
-    # Plot the ROC curve for the model
-    plt.plot(fpr, fnr, lw=2, label=f"EfficientNet M block 4 freeze")
-    # plt.plot(fpr, fnr, lw=2, label=f"Our EfficientDet L)")
-
-    eff_net.load_weights(
-        "/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-f-block3e_project_conv-lr0.0001-ffc480sn-09-0.97.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    y_pred = eff_net.predict(generators.test_flow).ravel()
-    # Compute the FPR and TPR at various thresholds
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    fpr, fnr, thresholds = det_curve(y_test, y_pred)
-    # Calculate the AUC
-    # roc_auc = auc(fpr, tpr)
-    # Plot the ROC curve for the model
-    plt.plot(fpr, fnr, lw=2, label=f"EfficientNet M block 3 freeze")
-    # plt.plot(fpr, fnr, lw=2, label=f"Our EfficientDet L)")
-
-    eff_net.load_weights(
-        "/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-lr0.0001-ffc480sn-10-1.00.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    y_pred = eff_net.predict(generators.test_flow).ravel()
-    # Compute the FPR and TPR at various thresholds
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    fpr, fnr, thresholds = det_curve(y_test, y_pred)
-    # Calculate the AUC
-    # roc_auc = auc(fpr, tpr)
-    # Plot the ROC curve for the model
-    plt.plot(fpr, fnr, lw=2, label=f"EfficientNet M")
-    # plt.plot(fpr, fnr, lw=2, label=f"Our EfficientDet L)")
-
-    # Customize and display the plot
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    # plt.ylabel('True Positive Rate')
-    plt.ylabel('False Negative Rate')
-    plt.title('Detection Error Tradeoff (DET) Curves for Multiple Models')
-    # plt.title('DET Curves for FaceForensics with JPEG Compressions')
-    # plt.title('Receiver Operating Characteristic (ROC) Curves for Celeb-DF')
-    plt.legend(loc="upper right")
-    # plt.show()
-    # plt.savefig(f"efficientdet-AUC-compress.png", dpi=2000)
-    plt.savefig(f"efficientnet-compare.svg")
-
-
-def print_scores():
-    # eff_net = efficientnet.build_model(True, "M")
-    # eff_det = efficientdet.build_model(True, "M")
-    eff_det = efficientdet.build_model(True, "L", robust=True)
-    # eff_net.built = True
-    eff_det.built = True
-    # eff_net.load_weights("/storage/brno2/home/xlapsa00/checkpoints-new2/efficientnetM-f-block4g_project_conv-lr0.0001-ffc480sn-08-0.96.hdf5")
-    eff_det.load_weights("/storage/brno2/home/xlapsa00/checkpoints-L/efficientdetMBigger-f-block3g_project_conv-lr0.0001-dr0.5-ffc480sn-04-0.97.hdf5")
-    y_test = generators.test_labels
-    # Get the predictions for the test set
-    # y_pred = eff_net.predict(generators.test_flow).ravel()
-    y_pred = eff_det.predict(generators.test_flow).ravel()
-
-    deepfakes = [y_pred[i] for i in range(len(y_pred)) if y_test[i] == 0.0]
-    genuine = [y_pred[i] for i in range(len(y_pred)) if y_test[i] == 1.0]
-
-    deepfakes_str = [str(x) for x in deepfakes]
-    genuine_str = [str(x) for x in genuine]
-
-    # Join the list of strings with a comma separator
-    deepfake_str_out = '\n'.join(deepfakes_str)
-    # Write the comma-separated string to a text file
-    with open("deepfakes.txt", "w") as file:
-        file.write(deepfake_str_out)
-
-    # Join the list of strings with a comma separator
-    genuine_str_out = '\n'.join(genuine_str)
-    # Write the comma-separated string to a text file
-    with open("genuine.txt", "w") as file:
-        file.write(genuine_str_out)
-
-
 def main():
     arguments = parse_args()
 
     # Assign dataset name before model assignment
     generators.dataset_name = arguments.dataset
 
-    model = assign_model(arguments.training_model, arguments.trained, arguments.type, arguments.frozen, float(arguments.learning_rate), arguments.checkpoint, float(arguments.dropout))
+    model = assign_model(arguments.training_model, arguments.trained, arguments.type, arguments.frozen,
+                         float(arguments.learning_rate), arguments.checkpoint, float(arguments.dropout))
     if model is None:
         print("Unresolved model name")
         return 1
@@ -338,11 +220,7 @@ def main():
         print("Unresolved dataset name")
         return 1
 
-    if arguments.eprint:
-        print_graph()
-    elif arguments.sprint:
-        print_scores()
-    elif arguments.eval:
+    if arguments.eval:
         # evaluating model
         checkpoint = arguments.eval
         print("Using checkpoint", checkpoint)

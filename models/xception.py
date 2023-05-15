@@ -1,3 +1,9 @@
+"""
+File name: xception.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Xception model representation.
+"""
+
 import tensorflow
 from keras import Model
 from keras.layers import Dense

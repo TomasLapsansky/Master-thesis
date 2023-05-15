@@ -1,3 +1,9 @@
+"""
+File name: vgg19.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: VGG19 model representation.
+"""
+
 from keras import Model
 from keras.layers import Dense
 from tensorflow import keras

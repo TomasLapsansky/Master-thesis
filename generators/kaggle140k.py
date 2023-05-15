@@ -1,7 +1,11 @@
+"""
+File name: kaggle140k.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: Processing of Kaggle 140k real and fake faces dataset.
+"""
+
 import os
 
-import tensorflow
-from tensorflow import keras
 from keras.preprocessing.image import ImageDataGenerator
 
 import generators

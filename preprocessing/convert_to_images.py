@@ -1,3 +1,9 @@
+"""
+File name: convert_to_images.py
+Author: Tomas Lapsansky (xlapsa00@stud.fit.vutbr.cz)
+Description: This file is used for video to image conversion.
+"""
+
 import os
 import sys
 import cv2
