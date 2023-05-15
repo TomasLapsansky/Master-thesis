@@ -48,6 +48,8 @@ Here is an example of how to run the script:
 python main.py -m efficientdet --type L -d celeb-df -t
 ```
 
+The repository also contains a preprocessing folder, where the scripts for dataset processing are located.
+
 ## License
 
 This project is licensed under the terms of the MIT license.
